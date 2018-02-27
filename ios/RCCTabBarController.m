@@ -5,6 +5,23 @@
 #import "RCTHelpers.h"
 #import <React/RCTUIManager.h>
 #import "UIViewController+Rotation.h"
+#import <QuartzCore/QuartzCore.h>
+
+@interface CAGradientLayer (SJSGradients)
+
++ (CAGradientLayer *)redGradientLayer;
++ (CAGradientLayer *)blueGradientLayer;
++ (CAGradientLayer *)turquoiseGradientLayer;
++ (CAGradientLayer *)flavescentGradientLayer;
++ (CAGradientLayer *)whiteGradientLayer;
++ (CAGradientLayer *)chocolateGradientLayer;
++ (CAGradientLayer *)tangerineGradientLayer;
++ (CAGradientLayer *)pastelBlueGradientLayer;
++ (CAGradientLayer *)yellowGradientLayer;
++ (CAGradientLayer *)purpleGradientLayer;
++ (CAGradientLayer *)greenGradientLayer;
+
+@end
 
 @interface RCTUIManager ()
 
@@ -114,10 +131,20 @@
       selectedLabelColor = color;
     }
     NSString *tabBarBackgroundColor = tabsStyle[@"tabBarBackgroundColor"];
+   
     if (tabBarBackgroundColor)
     {
-      UIColor *color = tabBarBackgroundColor != (id)[NSNull null] ? [RCTConvert UIColor:tabBarBackgroundColor] : nil;
-      self.tabBar.barTintColor = color;
+      //  UIColor *color = tabBarBackgroundColor != (id)[NSNull null] ? [RCTConvert UIColor:tabBarBackgroundColor] : nil;
+      NSString *width = tabsStyle[@"width"];
+      UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0,0,[ width integerValue ],50)];
+      CAGradientLayer *gradient = [CAGradientLayer layer];
+      gradient.frame = view.bounds;
+      gradient.startPoint = CGPointMake(0.0, 0.5);
+      gradient.endPoint = CGPointMake(1.0, 0.5);
+      gradient.colors = [NSArray arrayWithObjects:(id)[[UIColor colorWithRed:255.0/255.0 green:240/255.0 blue:0/255.0 alpha:1.0] CGColor],(id)[[UIColor colorWithRed:161/255.0 green:0/255.0 blue:128/255.0 alpha:1.0] CGColor], nil];
+      [self.tabBar.layer addSublayer:gradient];
+      //  [self.tabBar.layer insertSublayer:backgroundLayer atIndex:0];
+      //  self.tabBar.barTintColor = @[(id)[UIColor whiteColor].CGColor, (id)[UIColor blackColor].CGColor];;
     }
 
     NSString *tabBarTranslucent = tabsStyle[@"tabBarTranslucent"];
